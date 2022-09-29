@@ -13,10 +13,13 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/IBM-Swift/BlueSocket", from: "1.0.46"),
+        .package(url: "https://github.com/DimaRU/Libssh2Prebuild.git", .branch("1.10.0+OpenSSL_1_1_1o"))
     ],
     targets: [
-        .systemLibrary(name: "CSSH", pkgConfig: "libssh2", providers: [.brew(["libssh2","openssl"])]),
-        .target(name: "Shout", dependencies: ["CSSH", "Socket"]),
+        .target(name: "Shout", dependencies: [
+            .product(name: "CSSH", package: "Libssh2Prebuild"),
+            "Socket"
+        ]),
         .testTarget(name: "ShoutTests", dependencies: ["Shout"]),
     ]
 )
